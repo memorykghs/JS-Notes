@@ -1,2 +1,2 @@
 # JS-Notes
-ek4bp6
+JavaScript個人學習筆記

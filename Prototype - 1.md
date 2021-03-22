@@ -2,7 +2,15 @@
 ## `[[Prototype]]`
 所有 JavaScript 的物件都有一個內部屬性，用來儲存對另一個物件的參考，通常以 `[[Prototype]]` 表示。
 
-## `Object.prototype`
+如果想要調用某個物件上的屬性，`[[Get]]` 作業會先在物件本身上尋找，如果找不到該屬性，就會沿著 `[[Prototype]]` 連結尋找。
+
+* 如果該屬性不存在於 `[[Prototype]]` 連結上，最後 `[[Get]]` 作業會回傳 `undefined`。
+* `for...in` 語法會沿著 `[[Prototype]]` 上尋找，只要是可以在這個連結上找到且是可列舉 ( `enumerable: true` ) 的話，都會被印出來。
+<br/>
+
+## Object.prototype
+那麼，`[[Prototype]]` 串鏈到底終結於何處呢?每條正常的 `[[Prototype]]` 串鏈最頂層的尾端都是內建的 `Object.prototyp`。
+
 在 JavaScript 中，所有的物件都是 `Object`，所以一般情況下 `[[Prototype]]` 串鏈會指向 `Object.prototype`。
 
 `Object.prototype` 這個物件中，會有一些原本就預設 ( 存在 ) 的方法，如下面列舉的這些：
@@ -15,7 +23,7 @@
 所以建立的物件建立之後就可以直接使用這些方法。
 
 ## Shadowing 遮蔽
-如果要設定一個物件的 property，而 `[[Property]]` 又可以追溯到某個已經存在的 property 時，會發生什麼事情呢?
+如果要設定一個物件的 property，而 `[[Property]]` 又可以追溯到某個已經存在的 property 時，會發生什麼事情呢?這裡舉了一個例子，首先有一個 seal 物件，再來我們使用 `Object.create()` 語法來複製一個物件給 copySeal。最後，改變 copySeal 物件的 `name` 屬性，賦值為 Copy Seal。
 ```js
 var seal = {
     name: 'Seal'
@@ -34,6 +42,8 @@ console.log(` seal name： ${seal.name} \n copySeal name： ${copySeal.name}`);
 console.log(copySeal.hasOwnProperty('name'));
 ```
 ![ ](/images/prototype-1.png)
+
+可以看到，copySeal 會在自己的屬性上建立另一個 `name` 屬性，且不影響 Seal 物件的。
 
 但這種結果只限定在那個已經存在的 property 屬性是 `writable: true`。如果我們將他的 `writable` 屬性設定為 `false` 的話會發生什麼情況?
 ```js
@@ -57,7 +67,7 @@ console.log(copySeal.hasOwnProperty('name'));
 ```
 ![ ](/images/prototype-2.png)
 
-可以發現 `name` 這個屬性是不能被覆寫 ( 修改 ) 的。
+這時候 `name` 這個屬性是不能被覆寫 ( 修改 ) 的。
 
 在 YDKJS 這本書中有提到3個不同的狀況：
 > 1. 如果在 `[[Prototype]]` 串鏈的較高層上找到一個同名的正常資料存取器特性 ( 屬性 )，且沒有被標示為**唯讀** ( read only, `writable: false` )，那麼新的同名特性就會直接被新增到新建立的物件上，造成遮蔽的效果 ( shadow property )。

@@ -4,7 +4,7 @@
 
 如果想要調用某個物件上的屬性，`[[Get]]` 作業會先在物件本身上尋找，如果找不到該屬性，就會沿著 `[[Prototype]]` 連結尋找。
 
-* 如果該屬性不存在於 `[[Prototype]]` 連結上，最後 `[[Get]]` 作業會回傳 `undefined`。
+* 如果該屬性不存在於 `[[Prototype]]` 連結上，最後 `[[Get]]` 作業會回傳 **`undefined`**。
 * `for...in` 語法會沿著 `[[Prototype]]` 上尋找，只要是可以在這個連結上找到且是可列舉 ( `enumerable: true` ) 的話，都會被印出來。
 <br/>
 
@@ -21,6 +21,7 @@
 * `.__proto__`
 
 所以建立的物件建立之後就可以直接使用這些方法。
+![](/images/prototype-1.1.png)
 
 ## Shadowing 遮蔽
 如果要設定一個物件的 property，而 `[[Property]]` 又可以追溯到某個已經存在的 property 時，會發生什麼事情呢?這裡舉了一個例子，首先有一個 seal 物件，再來我們使用 `Object.create()` 語法來複製一個物件給 copySeal。最後，改變 copySeal 物件的 `name` 屬性，賦值為 Copy Seal。

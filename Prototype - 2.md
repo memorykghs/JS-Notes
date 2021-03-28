@@ -40,12 +40,6 @@ Object.getPrototypeOf(foo) === Foo.prototype; // true
 如果 obj 參數在 ES5 並不是物件時會拋出 TypeError 例外，同樣狀況在 ES6 時該參數將會被強制轉換成 Object。
 <br/>
 
-## 原型式繼承 Prototypal Inheritance
-**繼承**暗示著一種 **拷貝( copy )** 作業，JavaScript 在原生預設的情況下不會拷貝物件特性，而是會在兩個物件之間建立連結，讓其中一個物件能夠將特性與函式的存取 **委派 ( delegate )** 給另一個物件。
-
-> **委派 ( delegate )**
-委派 ( delegate ) 是描述 JavaScript 的物件連結機制比較精確的用詞。
-
 ## 建構器
 在進入正題之前，先看一段程式碼：
 ```js
